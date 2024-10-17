@@ -14,7 +14,6 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.util.List;
 @Entity
 @Getter
 @Setter
