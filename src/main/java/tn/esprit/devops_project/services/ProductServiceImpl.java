@@ -17,59 +17,38 @@ import java.util.List;
 @Slf4j
 public class ProductServiceImpl implements IProductService {
 
-    final ProductRepository productRepository;
-    final StockRepository stockRepository;
+   final ProductRepository productRepository;
+   final StockRepository stockRepository;
 
     @Override
     public Product addProduct(Product product, Long idStock) {
-        log.info("Attempting to add product: {} to stock with id: {}", product.getTitle(), idStock);
-        Stock stock = stockRepository.findById(idStock).orElseThrow(() -> {
-            log.error("Stock with id: {} not found", idStock);
-            return new NullPointerException("Stock not found");
-        });
+        Stock stock = stockRepository.findById(idStock).orElseThrow(() -> new NullPointerException("stock not found"));
         product.setStock(stock);
-        Product savedProduct = productRepository.save(product);
-        log.info("Product added successfully with id: {}", savedProduct.getIdProduct());
-        return savedProduct;
+        return productRepository.save(product);
     }
 
     @Override
     public Product retrieveProduct(Long id) {
-        log.info("Retrieving product with id: {}", id);
-        return productRepository.findById(id).orElseThrow(() -> {
-            log.error("Product with id: {} not found", id);
-            return new NullPointerException("Product not found");
-        });
+        return productRepository.findById(id).orElseThrow(() -> new NullPointerException("Product not found"));
     }
 
     @Override
     public List<Product> retreiveAllProduct() {
-        log.info("Retrieving all products");
-        List<Product> products = productRepository.findAll();
-        log.debug("Total products retrieved: {}", products.size());
-        return products;
+        return productRepository.findAll();
     }
 
     @Override
     public List<Product> retrieveProductByCategory(ProductCategory category) {
-        log.info("Retrieving products by category: {}", category);
-        List<Product> products = productRepository.findByCategory(category);
-        log.debug("Total products in category {}: {}", category, products.size());
-        return products;
+        return productRepository.findByCategory(category);
     }
 
     @Override
     public void deleteProduct(Long id) {
-        log.info("Attempting to delete product with id: {}", id);
         productRepository.deleteById(id);
-        log.info("Product with id: {} deleted successfully", id);
     }
 
     @Override
     public List<Product> retreiveProductStock(Long id) {
-        log.info("Retrieving products for stock with id: {}", id);
-        List<Product> products = productRepository.findByStockIdStock(id);
-        log.debug("Total products in stock with id {}: {}", id, products.size());
-        return products;
+        return productRepository.findByStockIdStock(id);
     }
 }
